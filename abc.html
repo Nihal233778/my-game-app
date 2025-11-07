@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Clicking Web App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            flex-direction: column;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #FF5733;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #countdown {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Self-Clicking Demo!</h1>
+        <p>This page will automatically "click" the button below in <span id="timer">3</span> seconds.</p>
+        <p>After the click, an alert will pop up.</p>
+        <button id="myButton">Click Me Manually (or wait)</button>
+    </div>
+
+    <script>
+        const button = document.getElementById('myButton');
+        const timerDisplay = document.getElementById('timer');
+        let countdown = 3;
+
+        button.addEventListener('click', () => {
+            alert('Button was clicked!');
+            console.log('Button clicked!');
+        });
+
+        function autoClickCountdown() {
+            timerDisplay.textContent = countdown;
+            if (countdown <= 0) {
+                button.click();
+                clearInterval(intervalId);
+                timerDisplay.textContent = 'now!';
+            } else {
+                countdown--;
+            }
+        }
+
+        const intervalId = setInterval(autoClickCountdown, 1000);
+    </script>
+</body>
+</html>
