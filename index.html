@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Self-Clicking Web App</title>
+    <title>Auto Ad Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,28 +54,37 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the Self-Clicking Demo!</h1>
-
+        <h1>Auto Ad Viewer</h1>
         <p>This page will automatically "click" the button below in <span id="timer">3</span> seconds.</p>
-        <p>After the click, an alert will pop up.</p>
-        <button id="myButton">Click Me Manually (or wait)</button>
+        <p>After the click, the ad will load, and the page will refresh automatically.</p>
+        <button id="myButton">Click Me (or wait)</button>
     </div>
-    
-    <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574" >
+
+    <!-- ✅ Adxuit ad script -->
+    <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
+
+    <script>
         const button = document.getElementById('myButton');
         const timerDisplay = document.getElementById('timer');
         let countdown = 3;
 
+        // When button is clicked — show your Adxuit ad
         button.addEventListener('click', () => {
-            alert('Button was clicked!'); // <--- THIS IS THE POPUP
-            console.log('Button clicked!');
+            if (typeof show_10158574 === 'function') {
+                show_10158574(); // ✅ Trigger Adxuit ad
+            }
+
+            // Reload the page after 10 seconds
+            setTimeout(() => {
+                location.reload();
+            }, 10000);
         });
 
+        // Countdown function
         function autoClickCountdown() {
             if (countdown === 0) {
                 button.click();
                 timerDisplay.textContent = 'now!';
-                // Reset or stop if needed
             } else {
                 timerDisplay.textContent = countdown;
                 countdown--;
@@ -83,16 +92,13 @@
             }
         }
 
-        // Start the countdown when the page loads
+        // Start countdown on page load
         document.addEventListener('DOMContentLoaded', autoClickCountdown);
     </script>
 </body>
-
-    
-    
-    
-
 </html>
+
+
 
 
 
