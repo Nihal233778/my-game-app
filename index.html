@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Adxuit Auto Click Demo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Adxuit Click Ad</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,10 +12,10 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background-color: #f0f2f5;
+      margin: 0;
+      background-color: #f9f9f9;
       flex-direction: column;
       color: #333;
-      margin: 0;
     }
     .container {
       background: #fff;
@@ -23,71 +24,50 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       text-align: center;
     }
+    h1 {
+      color: #FF5733;
+      margin-bottom: 15px;
+    }
     button {
       padding: 15px 30px;
-      background-color: #4CAF50;
-      color: #fff;
+      font-size: 18px;
       border: none;
       border-radius: 8px;
-      font-size: 18px;
+      background-color: #4CAF50;
+      color: white;
       cursor: pointer;
+      transition: 0.3s;
     }
     button:hover {
       background-color: #45a049;
-    }
-    #timer {
-      font-weight: bold;
-      color: #FF5733;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Adxuit Auto Clicker</h1>
-    <p>Button will auto-click in <span id="timer">3</span> seconds.</p>
-    <button id="myButton">Show Ad</button>
+    <h1>Adxuit Ad Demo</h1>
+    <p>Click the button below to display your ad.</p>
+    <button id="showAdBtn">Show Ad</button>
   </div>
 
   <!-- ✅ Adxuit ad script -->
   <script src="https://adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
 
   <script>
-    const button = document.getElementById('myButton');
-    const timerDisplay = document.getElementById('timer');
-    let countdown = 3;
+    const showAdBtn = document.getElementById('showAdBtn');
 
-    // ✅ Function to safely call ad only when loaded
-    function showAdxuitAd() {
+    showAdBtn.addEventListener('click', () => {
       if (typeof show_10158574 === 'function') {
-        console.log("Ad function found — showing ad now...");
-        show_10158574(); // Call the Adxuit ad
-        // Reload page after 10 seconds
-        setTimeout(() => location.reload(), 10000);
+        console.log('Ad function found — showing ad now...');
+        show_10158574(); // ✅ Show Adxuit ad
       } else {
-        console.log("Ad function not ready, retrying in 1s...");
-        setTimeout(showAdxuitAd, 1000);
+        alert('Ad is not ready yet. Please wait a second and try again.');
       }
-    }
-
-    // ✅ When the button is clicked — call Adxuit
-    button.addEventListener('click', showAdxuitAd);
-
-    // ✅ Countdown to auto-click
-    function autoClickCountdown() {
-      if (countdown === 0) {
-        button.click();
-        timerDisplay.textContent = 'now!';
-      } else {
-        timerDisplay.textContent = countdown;
-        countdown--;
-        setTimeout(autoClickCountdown, 1000);
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', autoClickCountdown);
+    });
   </script>
 </body>
 </html>
+
 
 
 
