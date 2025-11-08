@@ -1,102 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Ad Viewer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f2f5;
-            color: #333;
-            flex-direction: column;
-        }
-        .container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        h1 {
-            color: #FF5733;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-        button {
-            padding: 15px 30px;
-            font-size: 1.2em;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #countdown {
-            margin-top: 20px;
-            font-size: 1.5em;
-            color: #666;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adxuit Auto Click Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f0f2f5;
+      flex-direction: column;
+      color: #333;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    button {
+      padding: 15px 30px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #timer {
+      font-weight: bold;
+      color: #FF5733;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Auto Ad Viewer</h1>
-        <p>This page will automatically "click" the button below in <span id="timer">3</span> seconds.</p>
-        <p>After the click, the ad will load, and the page will refresh automatically.</p>
-        <button id="myButton">Click Me (or wait)</button>
-    </div>
+  <div class="container">
+    <h1>Adxuit Auto Clicker</h1>
+    <p>Button will auto-click in <span id="timer">3</span> seconds.</p>
+    <button id="myButton">Show Ad</button>
+  </div>
 
-    <!-- ✅ Adxuit ad script -->
-    <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
+  <!-- ✅ Adxuit ad script -->
+  <script src="https://adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
 
-    <script>
-        const button = document.getElementById('myButton');
-        const timerDisplay = document.getElementById('timer');
-        let countdown = 3;
+  <script>
+    const button = document.getElementById('myButton');
+    const timerDisplay = document.getElementById('timer');
+    let countdown = 3;
 
-        // When button is clicked — show your Adxuit ad
-        button.addEventListener('myButton' () => {
-            if (typeof show_10158574 === 'function') {
-                show_10158574(); // ✅ Trigger Adxuit ad
-            }
+    // ✅ Function to safely call ad only when loaded
+    function showAdxuitAd() {
+      if (typeof show_10158574 === 'function') {
+        console.log("Ad function found — showing ad now...");
+        show_10158574(); // Call the Adxuit ad
+        // Reload page after 10 seconds
+        setTimeout(() => location.reload(), 10000);
+      } else {
+        console.log("Ad function not ready, retrying in 1s...");
+        setTimeout(showAdxuitAd, 1000);
+      }
+    }
 
-            // Reload the page after 10 seconds
-            setTimeout(() => {
-                location.reload();
-            }, 10000);
-        });
+    // ✅ When the button is clicked — call Adxuit
+    button.addEventListener('click', showAdxuitAd);
 
-        // Countdown function
-        function autoClickCountdown() {
-            if (countdown === 0) {
-                button.click();
-                timerDisplay.textContent = 'now!';
-            } else {
-                timerDisplay.textContent = countdown;
-                countdown--;
-                setTimeout(autoClickCountdown, 1000);
-            }
-        }
+    // ✅ Countdown to auto-click
+    function autoClickCountdown() {
+      if (countdown === 0) {
+        button.click();
+        timerDisplay.textContent = 'now!';
+      } else {
+        timerDisplay.textContent = countdown;
+        countdown--;
+        setTimeout(autoClickCountdown, 1000);
+      }
+    }
 
-        // Start countdown on page load
-        document.addEventListener('DOMContentLoaded', autoClickCountdown);
-    </script>
+    document.addEventListener('DOMContentLoaded', autoClickCountdown);
+  </script>
 </body>
 </html>
+
+
 
 
 
