@@ -60,33 +60,38 @@
         <p>After the click, an alert will pop up.</p>
         <button id="myButton">Click Me Manually (or wait)</button>
     </div>
-
+ode
+```html
     <script>
         const button = document.getElementById('myButton');
         const timerDisplay = document.getElementById('timer');
         let countdown = 3;
 
         button.addEventListener('click', () => {
-            alert('Button was clicked!');
+            alert('Button was clicked!'); // <--- THIS IS THE POPUP
             console.log('Button clicked!');
         });
 
         function autoClickCountdown() {
-            timerDisplay.textContent = countdown;
-            if (countdown <= 0) {
+            if (countdown === 0) {
                 button.click();
-                clearInterval(intervalId);
                 timerDisplay.textContent = 'now!';
+                // Reset or stop if needed
             } else {
+                timerDisplay.textContent = countdown;
                 countdown--;
+                setTimeout(autoClickCountdown, 1000);
             }
         }
 
-        const intervalId = setInterval(autoClickCountdown, 1000);
+        // Start the countdown when the page loads
+        document.addEventListener('DOMContentLoaded', autoClickCountdown);
     </script>
+    
     <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
 </body>
 
 </html>
+
 
 
