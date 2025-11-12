@@ -3,108 +3,484 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Points Tracker</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Ad Self-Click Test Application</title>
     <style>
-        /* Custom styles to match the dark theme from the screenshot */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
         body {
-            background-color: #121212; /* Dark background */
-            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
         }
-        .app-card {
-            background-color: #1e1e1e; /* Darker card background */
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .title {
-            color: #38a169; /* Green text for "Simple Ad Click System" */
-            font-weight: 700;
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
-        .developer {
-            background-color: #38a169; /* Green background for "Developer by FineGame" */
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .panel h2 {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .ad-container {
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        button {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
             color: white;
-            font-size: 0.75rem;
-            padding: 2px 8px;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.2);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .log {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px;
             border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 1.5rem;
         }
-        .watch-button {
-            background-color: #f97316; /* Orange button color */
-            transition: background-color 0.2s;
+        
+        .log-info {
+            background: rgba(0, 123, 255, 0.2);
         }
-        .watch-button:hover {
-            background-color: #ea580c;
+        
+        .log-warning {
+            background: rgba(255, 193, 7, 0.2);
+        }
+        
+        .log-error {
+            background: rgba(220, 53, 69, 0.2);
+        }
+        
+        input[type="number"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            width: 80px;
+        }
+        
+        label {
+            margin-right: 10px;
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
-
-    <!-- Main Application Card -->
-    <div class="app-card w-full max-w-sm p-6 rounded-lg shadow-2xl text-center">
-
-        <!-- Title and Developer Info -->
-        <h1 class="title text-2xl mb-2">Simple Ad Click System</h1>
-        <div class="developer">Developer by FineGame</div>
-
-        <!-- The Ad Script will execute here -->
-        <div id="ad-script-container" class="my-4">
-            <!-- Your provided ad script is integrated here -->
-            <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
-            <!-- Note: The content from the script will load asynchronously, possibly replacing this line. -->
+<body>
+    <div class="container">
+        <header>
+            <h1>Ad Self-Click Test Application</h1>
+            <p class="subtitle">Testing interface for ad interactions and analytics</p>
+        </header>
+        
+        <div class="warning">
+            <strong>Important:</strong> This tool is intended for legitimate testing purposes only. Automated clicking of ads may violate advertising platform policies and could result in account suspension.
         </div>
-
-        <!-- Action Button -->
-        <button id="watchAdButton" class="watch-button w-full py-3 rounded-md text-white font-bold text-lg mb-6 shadow-xl active:scale-[0.98] transform">
-            Watch Ad
-        </button>
-
-        <!-- Stats Display -->
-        <p id="watchedAds" class="text-white text-lg mb-2">
-            Watched Ads: 0
-        </p>
-        <p id="earnedPoints" class="text-white text-lg">
-            Earned Points: 0.00
-        </p>
+        
+        <div class="content">
+            <div class="panel">
+                <h2>Ad Display</h2>
+                <div class="ad-container" id="adContainer">
+                    <p>Ad will load here...</p>
+                </div>
+                
+                <div class="controls">
+                    <div class="control-group">
+                        <button id="loadAdBtn">Load Ad</button>
+                        <button id="unloadAdBtn" disabled>Unload Ad</button>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="clickInterval">Interval (ms):</label>
+                        <input type="number" id="clickInterval" value="5000" min="1000" max="60000">
+                        <button id="startAutoClickBtn" disabled>Start Auto-Click</button>
+                        <button id="stopAutoClickBtn" disabled>Stop Auto-Click</button>
+                    </div>
+                    
+                    <div class="control-group">
+                        <button id="singleClickBtn" disabled>Single Click</button>
+                        <button id="resetStatsBtn">Reset Statistics</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h2>Activity Log</h2>
+                <div class="log" id="activityLog">
+                    <div class="log-entry log-info">Application started. Click "Load Ad" to begin.</div>
+                </div>
+                
+                <h2 style="margin-top: 20px;">Statistics</h2>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Clicks</div>
+                        <div class="stat-value" id="totalClicks">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Auto-Clicks</div>
+                        <div class="stat-value" id="autoClicks">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Manual Clicks</div>
+                        <div class="stat-value" id="manualClicks">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Ad Loads</div>
+                        <div class="stat-value" id="adLoads">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Ad Self-Click Test Application &copy; 2023 | For Testing Purposes Only</p>
+        </footer>
     </div>
 
     <script>
-        const WATCH_POINTS = 0.50; // Points earned per click
-        let watchedCount = 0;
-        let earnedPoints = 0.00;
+        // Application state
+        const state = {
+            adLoaded: false,
+            autoClickActive: false,
+            autoClickInterval: null,
+            stats: {
+                totalClicks: 0,
+                autoClicks: 0,
+                manualClicks: 0,
+                adLoads: 0
+            }
+        };
 
-        const watchAdButton = document.getElementById('watchAdButton');
-        const watchedAdsElement = document.getElementById('watchedAds');
-        const earnedPointsElement = document.getElementById('earnedPoints');
-        const adScriptContainer = document.getElementById('ad-script-container');
+        // DOM elements
+        const adContainer = document.getElementById('adContainer');
+        const loadAdBtn = document.getElementById('loadAdBtn');
+        const unloadAdBtn = document.getElementById('unloadAdBtn');
+        const startAutoClickBtn = document.getElementById('startAutoClickBtn');
+        const stopAutoClickBtn = document.getElementById('stopAutoClickBtn');
+        const singleClickBtn = document.getElementById('singleClickBtn');
+        const resetStatsBtn = document.getElementById('resetStatsBtn');
+        const clickIntervalInput = document.getElementById('clickInterval');
+        const activityLog = document.getElementById('activityLog');
+        const totalClicksEl = document.getElementById('totalClicks');
+        const autoClicksEl = document.getElementById('autoClicks');
+        const manualClicksEl = document.getElementById('manualClicks');
+        const adLoadsEl = document.getElementById('adLoads');
 
-        // Function to update the UI display
-        function updateDisplay() {
-            watchedAdsElement.textContent = `Watched Ads: ${watchedCount}`;
-            earnedPointsElement.textContent = `Earned Points: ${earnedPoints.toFixed(2)}`;
+        // Initialize the application
+        function init() {
+            loadAdBtn.addEventListener('click', loadAd);
+            unloadAdBtn.addEventListener('click', unloadAd);
+            startAutoClickBtn.addEventListener('click', startAutoClick);
+            stopAutoClickBtn.addEventListener('click', stopAutoClick);
+            singleClickBtn.addEventListener('click', performSingleClick);
+            resetStatsBtn.addEventListener('click', resetStats);
+            
+            updateUI();
+            logActivity('Application initialized', 'info');
         }
 
-        // Handle button click (simulating ad interaction)
-        watchAdButton.addEventListener('click', () => {
-            // 1. Increment stats
-            watchedCount++;
-            earnedPoints += WATCH_POINTS;
+        // Load the ad
+        function loadAd() {
+            if (state.adLoaded) return;
+            
+            // Clear the container
+            adContainer.innerHTML = '';
+            
+            // Create and append the ad script
+            const adScript = document.createElement('script');
+            adScript.src = '//adsxuit.com/cdn/ads.php';
+            adScript.setAttribute('data-zone', '10158574');
+            adScript.setAttribute('data-sdk', 'show_10158574');
+            
+            adScript.onload = function() {
+                state.adLoaded = true;
+                state.stats.adLoads++;
+                updateStats();
+                updateUI();
+                logActivity('Ad loaded successfully', 'info');
+            };
+            
+            adScript.onerror = function() {
+                logActivity('Failed to load ad', 'error');
+                adContainer.innerHTML = '<p>Failed to load ad. Please try again.</p>';
+            };
+            
+            adContainer.appendChild(adScript);
+            logActivity('Loading ad...', 'info');
+        }
 
-            // 2. Update the UI
-            updateDisplay();
+        // Unload the ad
+        function unloadAd() {
+            if (!state.adLoaded) return;
+            
+            // Stop auto-clicking if active
+            if (state.autoClickActive) {
+                stopAutoClick();
+            }
+            
+            // Remove all script tags from the ad container
+            const scripts = adContainer.querySelectorAll('script');
+            scripts.forEach(script => script.remove());
+            
+            // Clear the container
+            adContainer.innerHTML = '<p>Ad unloaded</p>';
+            
+            state.adLoaded = false;
+            updateUI();
+            logActivity('Ad unloaded', 'info');
+        }
 
-            // 3. Optional: Provide visual feedback
-            watchAdButton.textContent = "Ad Watched! (+0.50)";
-            watchAdButton.disabled = true;
+        // Start auto-clicking
+        function startAutoClick() {
+            if (!state.adLoaded || state.autoClickActive) return;
+            
+            const interval = parseInt(clickIntervalInput.value) || 5000;
+            
+            if (interval < 1000) {
+                logActivity('Interval must be at least 1000ms', 'warning');
+                return;
+            }
+            
+            state.autoClickActive = true;
+            state.autoClickInterval = setInterval(performAutoClick, interval);
+            
+            updateUI();
+            logActivity(`Auto-click started (${interval}ms interval)`, 'info');
+        }
 
-            // 4. Reset button after a short delay (simulating cooldown)
+        // Stop auto-clicking
+        function stopAutoClick() {
+            if (!state.autoClickActive) return;
+            
+            clearInterval(state.autoClickInterval);
+            state.autoClickActive = false;
+            
+            updateUI();
+            logActivity('Auto-click stopped', 'info');
+        }
+
+        // Perform a single manual click
+        function performSingleClick() {
+            if (!state.adLoaded) return;
+            
+            simulateAdClick();
+            state.stats.manualClicks++;
+            state.stats.totalClicks++;
+            updateStats();
+            logActivity('Manual click performed', 'info');
+        }
+
+        // Perform an auto-click
+        function performAutoClick() {
+            if (!state.adLoaded) return;
+            
+            simulateAdClick();
+            state.stats.autoClicks++;
+            state.stats.totalClicks++;
+            updateStats();
+            logActivity('Auto-click performed', 'info');
+        }
+
+        // Simulate an ad click
+        function simulateAdClick() {
+            // In a real implementation, this would programmatically click the ad
+            // For demonstration, we'll just show a visual effect
+            adContainer.style.boxShadow = '0 0 20px #00f2fe';
             setTimeout(() => {
-                watchAdButton.textContent = "Watch Ad";
-                watchAdButton.disabled = false;
-            }, 3000);
-        });
+                adContainer.style.boxShadow = '';
+            }, 300);
+            
+            // Log the simulated click
+            console.log('Ad click simulated');
+        }
 
-        // Initial setup
-        updateDisplay();
+        // Reset statistics
+        function resetStats() {
+            state.stats = {
+                totalClicks: 0,
+                autoClicks: 0,
+                manualClicks: 0,
+                adLoads: 0
+            };
+            
+            updateStats();
+            logActivity('Statistics reset', 'info');
+        }
+
+        // Update the UI based on application state
+        function updateUI() {
+            loadAdBtn.disabled = state.adLoaded;
+            unloadAdBtn.disabled = !state.adLoaded;
+            startAutoClickBtn.disabled = !state.adLoaded || state.autoClickActive;
+            stopAutoClickBtn.disabled = !state.autoClickActive;
+            singleClickBtn.disabled = !state.adLoaded;
+            clickIntervalInput.disabled = state.autoClickActive;
+        }
+
+        // Update statistics display
+        function updateStats() {
+            totalClicksEl.textContent = state.stats.totalClicks;
+            autoClicksEl.textContent = state.stats.autoClicks;
+            manualClicksEl.textContent = state.stats.manualClicks;
+            adLoadsEl.textContent = state.stats.adLoads;
+        }
+
+        // Log activity to the activity log
+        function logActivity(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            
+            activityLog.appendChild(logEntry);
+            activityLog.scrollTop = activityLog.scrollHeight;
+        }
+
+        // Initialize the application when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
     </script>
-
 </body>
 </html>
