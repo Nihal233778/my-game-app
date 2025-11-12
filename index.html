@@ -3,50 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embedded Script Container</title>
+    <title>Simple Points Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Custom styles to match the dark theme from the screenshot */
         body {
+            background-color: #121212; /* Dark background */
             font-family: 'Inter', sans-serif;
-            background-color: #f7f9fb;
+        }
+        .app-card {
+            background-color: #1e1e1e; /* Darker card background */
+        }
+        .title {
+            color: #38a169; /* Green text for "Simple Ad Click System" */
+            font-weight: 700;
+        }
+        .developer {
+            background-color: #38a169; /* Green background for "Developer by FineGame" */
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+        .watch-button {
+            background-color: #f97316; /* Orange button color */
+            transition: background-color 0.2s;
+        }
+        .watch-button:hover {
+            background-color: #ea580c;
         }
     </style>
 </head>
-<body class="p-4 sm:p-8 min-h-screen flex items-center justify-center">
+<body class="flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-xl bg-white p-6 sm:p-8 rounded-xl shadow-2xl border border-gray-100">
-        <h1 class="text-3xl font-extrabold text-gray-800 mb-4 text-center">Script Demonstration Page</h1>
-        <p class="text-gray-600 mb-6 text-center">
-            The external content or advertisement will load in the space below.
-        </p>
+    <!-- Main Application Card -->
+    <div class="app-card w-full max-w-sm p-6 rounded-lg shadow-2xl text-center">
 
-        <!-- Container for the Script Content -->
-        <div id="script-container" class="bg-gray-50 border-2 border-dashed border-indigo-300 p-4 rounded-lg min-h-[150px] flex items-center justify-center text-gray-400">
-            <!-- This is where the script execution will place content -->
-            Content loading from adsxuit.com...
+        <!-- Title and Developer Info -->
+        <h1 class="title text-2xl mb-2">Simple Ad Click System</h1>
+        <div class="developer">Developer by FineGame</div>
+
+        <!-- The Ad Script will execute here -->
+        <div id="ad-script-container" class="my-4">
+            <!-- Your provided ad script is integrated here -->
+            <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
+            <!-- Note: The content from the script will load asynchronously, possibly replacing this line. -->
         </div>
 
-        <p class="text-sm text-gray-400 mt-6 text-center">
-            Note: This page is designed only to host and execute the embedded external script.
+        <!-- Action Button -->
+        <button id="watchAdButton" class="watch-button w-full py-3 rounded-md text-white font-bold text-lg mb-6 shadow-xl active:scale-[0.98] transform">
+            Watch Ad
+        </button>
+
+        <!-- Stats Display -->
+        <p id="watchedAds" class="text-white text-lg mb-2">
+            Watched Ads: 0
+        </p>
+        <p id="earnedPoints" class="text-white text-lg">
+            Earned Points: 0.00
         </p>
     </div>
 
-    <!-- The user-provided script is placed here in the body -->
-    <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
+    <script>
+        const WATCH_POINTS = 0.50; // Points earned per click
+        let watchedCount = 0;
+        let earnedPoints = 0.00;
+
+        const watchAdButton = document.getElementById('watchAdButton');
+        const watchedAdsElement = document.getElementById('watchedAds');
+        const earnedPointsElement = document.getElementById('earnedPoints');
+        const adScriptContainer = document.getElementById('ad-script-container');
+
+        // Function to update the UI display
+        function updateDisplay() {
+            watchedAdsElement.textContent = `Watched Ads: ${watchedCount}`;
+            earnedPointsElement.textContent = `Earned Points: ${earnedPoints.toFixed(2)}`;
+        }
+
+        // Handle button click (simulating ad interaction)
+        watchAdButton.addEventListener('click', () => {
+            // 1. Increment stats
+            watchedCount++;
+            earnedPoints += WATCH_POINTS;
+
+            // 2. Update the UI
+            updateDisplay();
+
+            // 3. Optional: Provide visual feedback
+            watchAdButton.textContent = "Ad Watched! (+0.50)";
+            watchAdButton.disabled = true;
+
+            // 4. Reset button after a short delay (simulating cooldown)
+            setTimeout(() => {
+                watchAdButton.textContent = "Watch Ad";
+                watchAdButton.disabled = false;
+            }, 3000);
+        });
+
+        // Initial setup
+        updateDisplay();
+    </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
