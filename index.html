@@ -1,116 +1,39 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ad Reward System</title>
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        background-color: #121212;
-        color: #fff;
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-    .container {
-        text-align: center;
-        background: #1f1f1f;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        width: 300px;
-    }
-    .container h1 {
-        font-size: 20px;
-        color: green;
-        margin-bottom: 10px;
-    }
-    .developer {
-        font-size: 12px;
-        background-color: green;
-        padding: 5px 10px;
-        border-radius: 5px;
-        margin-bottom: 15px;
-        display: inline-block;
-        cursor: pointer;
-    }
-    .buttons button {
-        width: 90%;
-        margin: 5px 0;
-        padding: 10px;
-        font-size: 14px;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        background: green;
-        cursor: pointer;
-    }
-    .buttons button:hover {
-        background: darkorange;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Script Container</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+    </style>
 </head>
+<body class="p-4 sm:p-8 min-h-screen flex items-center justify-center">
 
-<body>
-    <div class="container">
-        <h1>Simple Ad Click System</h1>
-        <div class="developer" onclick="window.location.href='http://t.me/Finegame_bot'">
-            Developer by FineGame
+    <div class="w-full max-w-xl bg-white p-6 sm:p-8 rounded-xl shadow-2xl border border-gray-100">
+        <h1 class="text-3xl font-extrabold text-gray-800 mb-4 text-center">Script Demonstration Page</h1>
+        <p class="text-gray-600 mb-6 text-center">
+            The external content or advertisement will load in the space below.
+        </p>
+
+        <!-- Container for the Script Content -->
+        <div id="script-container" class="bg-gray-50 border-2 border-dashed border-indigo-300 p-4 rounded-lg min-h-[150px] flex items-center justify-center text-gray-400">
+            <!-- This is where the script execution will place content -->
+            Content loading from adsxuit.com...
         </div>
 
-        <div class="buttons">
-            <button id="watch-ad-btn" onclick="watchAd()">Watch Ad</button>
-        </div>
-
-        <p>Watched Ads: <span id="watched-ads">0</span></p>
-        <p>Earned Points: <span id="earned-points">0.00</span></p>
+        <p class="text-sm text-gray-400 mt-6 text-center">
+            Note: This page is designed only to host and execute the embedded external script.
+        </p>
     </div>
 
-    <!-- ✅ Adxuit Script -->
+    <!-- The user-provided script is placed here in the body -->
     <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
 
-    <script>
-        let watchedAdsCount = 0;
-        let earnedPoints = 0.00;
-
-        function watchAd() {
-            try {
-                if (typeof show_10158574 === 'function') {
-                    show_10158574(); // call adxuit SDK function
-                    watchedAdsCount++;
-                    earnedPoints += 0.50;
-
-                    // update UI
-                    document.getElementById('watched-ads').textContent = watchedAdsCount;
-                    document.getElementById('earned-points').textContent = earnedPoints.toFixed(2);
-
-                    // save progress
-                    localStorage.setItem('watchedAdsCount', watchedAdsCount);
-                    localStorage.setItem('earnedPoints', earnedPoints.toFixed(2));
-                } else {
-                    alert("Ad is still loading... please try again in a moment.");
-                }
-            } catch (error) {
-                console.error("Error showing ad:", error);
-                alert("Something went wrong loading the ad.");
-            }
-        }
-
-        // restore user progress
-        window.onload = function() {
-            if (localStorage.getItem('watchedAdsCount')) {
-                watchedAdsCount = parseInt(localStorage.getItem('watchedAdsCount'));
-                earnedPoints = parseFloat(localStorage.getItem('earnedPoints'));
-                document.getElementById('watched-ads').textContent = watchedAdsCount;
-                document.getElementById('earned-points').textContent = earnedPoints.toFixed(2);
-            }
-        }
-    </script>
 </body>
 </html>
 
