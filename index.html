@@ -1,63 +1,84 @@
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  body {
-    /* Set Inter font as default */
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-    /* Dark background */
-    background-color: #111827; /* Gray 900 */
-    color: #e5e7eb; /* Light text */
-  }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offer Finder</title>
 
-<div class="min-h-screen flex items-start justify-center p-4 sm:p-6">
-  <div class="w-full max-w-xl bg-gray-800 rounded-2xl shadow-2xl p-8 sm:p-10 mt-10 border border-gray-700">
-    
-    <header class="text-center mb-10">
-      <h1 class="text-4xl font-extrabold text-cyan-400 mb-2 tracking-wide">
-        Ad Network Display Console
-      </h1>
-      <p class="text-gray-400 text-lg">A High-Contrast Environment for Ad Unit Testing</p>
-    </header>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+    }
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #0066ff;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    .btn:hover {
+      opacity: 0.9;
+    }
+    #ad-block {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px dashed #ccc;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+  </style>
+</head>
+<body>
 
-    <!-- INTERACTIVE BUTTON SECTION -->
-    <section class="mb-8 text-center">
-        <button 
-            onclick="console.log('Interaction Button Clicked!');"
-            class="bg-cyan-500 hover:bg-cyan-400 text-gray-900 font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg shadow-cyan-500/50 uppercase tracking-wider text-lg focus:outline-none focus:ring-4 focus:ring-cyan-500 focus:ring-opacity-50"
-        >
-            Simulate User Interaction
-        </button>
-        <p class="text-xs text-gray-500 mt-2">Check the browser console for click logs.</p>
-    </section>
-    <!-- END INTERACTIVE BUTTON SECTION -->
+<div class="container">
+  <h1>🔥 Today’s Best Offers</h1>
+  <p>Tap the button to load special offers.</p>
 
-    <!-- The container where the ad unit is loaded via the external script -->
-    <div id="ad-container" class="border-4 border-dashed border-lime-500 bg-gray-900 p-8 rounded-xl flex flex-col items-center justify-center min-h-52 shadow-inner shadow-lime-900/50">
-      
-      <p class="text-lime-400 font-bold text-xl mb-4 uppercase tracking-wider">
-        [ Ad Unit Loading Below ]
-      </p>
-      
-      <!-- INTEGRATED AD NETWORK SCRIPT -->
-      <!-- The script will load and execute here, injecting the ad content -->
-      <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
-      <!-- END AD SCRIPT -->
+  <button class="btn" id="showOffers">Show Offers</button>
 
-      <div class="mt-6 text-sm text-gray-500 text-center">
-        The external advertisement content will render within this focused dark area.
-      </div>
-    </div>
-
-    <footer class="mt-10 pt-6 border-t border-gray-700 text-center text-sm text-gray-500">
-      <p>Source: adsxuit.com | Zone ID: 10158574</p>
-    </footer>
-
+  <div id="ad-block">
+    <!-- Adxuite Ad Script -->
+    <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
   </div>
-</div>                                                
+
+</div>
+
+<script>
+  document.getElementById("showOffers").addEventListener("click", () => {
+    document.getElementById("ad-block").scrollIntoView({ behavior: "smooth" });
+
+    console.log("User viewed offers at:", new Date().toISOString());
+  });
+</script>
+
+</body>
+</html>
+
+   
 
     
+
+    
+
 
 
 
