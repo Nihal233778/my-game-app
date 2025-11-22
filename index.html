@@ -1,95 +1,72 @@
-                                                
-<!DOCTYPE html>
+                                                <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Self-Clicking Web App</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f2f5;
-            flex-direction: column;
-        }
-        .container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-        p {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #timer {
-            font-weight: bold;
-            color: #d9534f;
-        }
-    </style>
+<title>Page Title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+/* Style the header */
+.header {
+  padding: 80px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+}
+
+/* Increase the font size of the h1 element */
+.header h1 {
+  font-size: 40px;
+}
+
+/* Style the top navigation bar */
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+}
+
+/* Style the navigation bar links */
+.navbar a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+}
+
+/* Right-aligned link */
+.navbar a.right {
+  float: right;
+}
+
+/* Change color on hover */
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to the Python Self-Clicking Demo!</h1>
-        <p>This button will automatically click in <span id="timer">5</span> seconds.</p>
-        <p>You can also click it manually.</p>
-        <button id="myButton">Click Me Manually (or wait)</button>
-    </div>
 
-    <script>
-        const button = document.getElementById('myButton');
-        const timerDisplay = document.getElementById('timer');
-        let countdown = 5; // Start countdown from 5 seconds
+<div class="header">
+  <h1>My Website</h1>
+  <p>A website created by me.</p>
+</div>
 
-        // Event listener for manual clicks
-        button.addEventListener('click', () => {
-            console.log('Button clicked manually!');
-        });
+<div class="navbar">
+  <a href="#"><script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script></a>
+  <a href="#">Link</a>
+  <a href="#">Link</a>
+  <a href="#" class="right">Link</a>
+</div>
 
-        // Function for automatic clicking
-        function autoClickCountdown() {
-            if (countdown <= 0) {
-                button.click();
-                timerDisplay.textContent = 'now!';
-                console.log('Button clicked automatically!');
-                countdown = 5;
-                setTimeout(autoClickCountdown, 1000);
-            } else {
-                timerDisplay.textContent = countdown;
-                countdown--;
-                setTimeout(autoClickCountdown, 1000);
-            }
-        }
-
-        // Start the countdown when the page loads
-        document.addEventListener('DOMContentLoaded', autoClickCountdown);
-    </script>
-
-    <!-- Adsxuit Ad Code Start -->
-    <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
-    <!-- Adsxuit Ad Code End -->
 </body>
 </html>
+
+    
+
