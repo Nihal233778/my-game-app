@@ -1,68 +1,98 @@
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  body {
-    /* Set Inter font as default */
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-    /* Dark background */
-    background-color: #111827; /* Gray 900 */
-    color: #e5e7eb; /* Light text */
-  }
-</style>
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motivational Quote Generator</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script> 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
 
-<div class="min-h-screen flex items-start justify-center p-4 sm:p-6">
-  <div class="w-full max-w-xl bg-gray-800 rounded-2xl shadow-2xl p-8 sm:p-10 mt-10 border border-gray-700">
-    
-    <header class="text-center mb-10">
-      <h1 class="text-4xl font-extrabold text-cyan-400 mb-2 tracking-wide">
-        Ad Network Display Console
-      </h1>
-      <p class="text-gray-400 text-lg">A High-Contrast Environment for Ad Unit Testing</p>
-    </header>
+    <!-- Main Container -->
+    <div class="w-full max-w-lg bg-white shadow-2xl rounded-xl p-8 md:p-10 border-t-4 border-indigo-500 transform hover:scale-[1.01] transition duration-300">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Daily Dose of Inspiration</h1>
 
-    <!-- INTERACTIVE BUTTON SECTION -->
-    <section class="mb-8 text-center">
-        <button 
-            onclick="console.log('Interaction Button Clicked!');"
-            class="bg-cyan-500 hover:bg-cyan-400 text-gray-900 font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg shadow-cyan-500/50 uppercase tracking-wider text-lg focus:outline-none focus:ring-4 focus:ring-cyan-500 focus:ring-opacity-50"
-        >
-            Simulate User Interaction
-        </button>
-        <p class="text-xs text-gray-500 mt-2">Check the browser console for click logs.</p>
-    </section>
-    <!-- END INTERACTIVE BUTTON SECTION -->
+        <!-- Quote Display Card -->
+        <div id="quote-card" class="bg-indigo-50 p-6 rounded-lg mb-8 transition duration-500 ease-in-out">
+            <p id="quote-text" class="text-xl italic text-gray-700 text-center mb-4">
+                "The only way to do great work is to love what you do."
+            </p>
+            <p id="quote-author" class="text-lg font-semibold text-indigo-600 text-right pr-2">— Steve Jobs</p>
+        </div>
 
-    <!-- The container where the ad unit is loaded via the external script -->
-    <div id="ad-container" class="border-4 border-dashed border-lime-500 bg-gray-900 p-8 rounded-xl flex flex-col items-center justify-center min-h-52 shadow-inner shadow-lime-900/50">
-      
-      <p class="text-lime-400 font-bold text-xl mb-4 uppercase tracking-wider">
-        [ Ad Unit Loading Below ]
-      </p>
-      
-      <!-- INTEGRATED AD NETWORK SCRIPT -->
-      <!-- The script will load and execute here, injecting the ad content -->
-      <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
-      <!-- END AD SCRIPT -->
-
-      <div class="mt-6 text-sm text-gray-500 text-center">
-        The external advertisement content will render within this focused dark area.
-      </div>
+        <!-- Generate Button -->
+        <div class="text-center">
+            <button id="generate-btn"
+                    class="w-full md:w-auto px-6 py-3 bg-indigo-600 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-150 ease-in-out active:bg-indigo-800 transform active:scale-95">
+                New Quote
+            </button>
+        </div>
     </div>
 
-    <footer class="mt-10 pt-6 border-t border-gray-700 text-center text-sm text-gray-500">
-      <p>Source: adsxuit.com | Zone ID: 10158574</p>
-    </footer>
+    <script>
+        // Array of motivational quotes and their authors
+        const quotes = [
+            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+            { text: "Strive not to be a success, but rather to be of value.", author: "Albert Einstein" },
+            { text: "The mind is everything. What you think you become.", author: "Buddha" },
+            { text: "We become what we think about.", author: "Earl Nightingale" },
+            { text: "Life is 10% what happens to you and 90% how you react to it.", author: "Charles R. Swindoll" },
+            { text: "If you are not willing to risk the usual, you will have to settle for the ordinary.", author: "Jim Rohn" },
+            { text: "Go confidently in the direction of your dreams. Live the life you have imagined.", author: "Henry David Thoreau" },
+            { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
+            { text: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
+            { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" }
+        ];
 
-  </div>
-</div>
-      
-   
+        // Get elements
+        const quoteText = document.getElementById('quote-text');
+        const quoteAuthor = document.getElementById('quote-author');
+        const generateBtn = document.getElementById('generate-btn');
+        const quoteCard = document.getElementById('quote-card');
 
+        // Function to select and display a random quote
+        function displayRandomQuote() {
+            // Get a random index from the quotes array
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            const quote = quotes[randomIndex];
+
+            // Animate quote out and then in
+            quoteCard.classList.add('opacity-0', 'scale-95');
+
+            setTimeout(() => {
+                // Update the text content
+                quoteText.textContent = `"${quote.text}"`;
+                quoteAuthor.textContent = `— ${quote.author}`;
+
+                // Animate quote back in
+                quoteCard.classList.remove('opacity-0', 'scale-95');
+                quoteCard.classList.add('opacity-100', 'scale-100');
+            }, 300); // Duration matches CSS transition
+        }
+
+        // Add event listener to the button
+        generateBtn.addEventListener('click', displayRandomQuote);
+
+        // Display the first quote on load (the default is already set in HTML, but this ensures randomness)
+        window.onload = displayRandomQuote;
+
+    </script>
+</body>
+</html>
 
     
 
     
+
 
 
 
