@@ -1,72 +1,102 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HackerAI Assessment Tool</title>
+    <title>HackerAI - Security Auditor</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            background-color: #1c1c1c;
-            color: #00ff00; /* Hacker aesthetic */
+            background-color: #0f0f0f;
+            color: #00ff41;
             font-family: 'Courier New', monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
+            padding: 20px;
+            font-size: 14px;
         }
-        #action-btn {
-            padding: 15px 30px;
-            font-size: 18px;
-            background-color: #00ff00;
+        #log-window {
+            background-color: #000;
+            border: 1px solid #00ff41;
+            padding: 10px;
+            height: 250px;
+            overflow-y: scroll;
+            margin-top: 20px;
+            color: #00ff41;
+            white-space: pre-wrap;
+        }
+        .header { text-align: center; border-bottom: 1px solid #00ff41; margin-bottom: 20px; }
+        .audit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #00ff41;
             color: #000;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
             font-weight: bold;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div id="app-content">
-        <h2>Security Assessment Node</h2>
-        <p>Target: adsxuit.com SDK</p>
-        
-        <!-- This is your script. If it has no button, it likely runs in the background or injects an iframe -->
-        <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
 
-        <button id="action-btn">EXECUTE PAYLOAD</button>
+    <div class="header">
+        <h3>TMA SECURITY AUDITOR</h3>
     </div>
+
+    <!-- TARGET SCRIPT -->
+    <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
+
+    <button class="audit-btn" onclick="startAudit()">RUN SECURITY SCAN</button>
+
+    <div id="log-window">System ready. Awaiting scan...</div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Adding logic to the button
-        document.getElementById('action-btn').addEventListener('click', () => {
-            // Check if the script injected any hidden elements we should see
-            const scripts = document.getElementsByTagName('script');
-            console.log("Analyzing scripts for hardcoded secrets...");
-            
-            tg.showAlert("Payload Executed. Monitoring script behavior.");
-            
-            // You can also use Telegram's MainButton (the big one at the bottom)
-            tg.MainButton.text = "PROCEED TO TEST";
-            tg.MainButton.show();
-        });
+        function log(message) {
+            const logWin = document.getElementById('log-window');
+            logWin.innerHTML += `\n[${new Date().toLocaleTimeString()}] ${message}`;
+            logWin.scrollTop = logWin.scrollHeight;
+        }
 
-        tg.onEvent('mainButtonClicked', function(){
-            tg.sendData("button_clicked_by_user");
-        });
+        function startAudit() {
+            log("Initializing scan on adsxuit.com SDK...");
+
+            // 1. Scan for Hidden Inputs (often used to store API keys/tokens)
+            const inputs = document.querySelectorAll('input[type="hidden"]');
+            log(`Found ${inputs.length} hidden input fields.`);
+            inputs.forEach(input => {
+                log(`- Found Hidden Field: Name="${input.name}" | Value="${input.value}"`);
+            });
+
+            // 2. Scan for hardcoded data attributes in the script tag itself
+            const sourceScript = document.querySelector('script[src*="adsxuit.com"]');
+            if (sourceScript) {
+                log("Analyzing target script attributes...");
+                const zone = sourceScript.getAttribute('data-zone');
+                const sdk = sourceScript.getAttribute('data-sdk');
+                log(`- Zone ID: ${zone}`);
+                log(`- SDK ID: ${sdk}`);
+            }
+
+            // 3. Scan for Data Exfiltration (Checking for dynamically created iframes/images)
+            const iframes = document.getElementsByTagName('iframe');
+            log(`Active Iframes detected: ${iframes.length}`);
+            
+            // 4. Checking for global variables that the script might have leaked
+            if (window.show_10158574) {
+                log("Detected global SDK object: window.show_10158574");
+                console.dir(window.show_10158574);
+            }
+
+            log("Audit complete. Check console for full object dumps.");
+        }
     </script>
 </body>
 </html>
     
 
     
+
 
 
 
