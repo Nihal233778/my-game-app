@@ -3,88 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Motivational Quote Generator</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script> 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>HackerAI Mini App</title>
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f7f9fc;
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-
-    <!-- Main Container -->
-    <div class="w-full max-w-lg bg-white shadow-2xl rounded-xl p-8 md:p-10 border-t-4 border-indigo-500 transform hover:scale-[1.01] transition duration-300">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Daily Dose of Inspiration</h1>
-
-        <!-- Quote Display Card -->
-        <div id="quote-card" class="bg-indigo-50 p-6 rounded-lg mb-8 transition duration-500 ease-in-out">
-            <p id="quote-text" class="text-xl italic text-gray-700 text-center mb-4">
-                "The only way to do great work is to love what you do."
-            </p>
-            <p id="quote-author" class="text-lg font-semibold text-indigo-600 text-right pr-2">— Steve Jobs</p>
-        </div>
-
-        <!-- Generate Button -->
-        <div class="text-center">
-            <button id="generate-btn"
-                    class="w-full md:w-auto px-6 py-3 bg-indigo-600 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-150 ease-in-out active:bg-indigo-800 transform active:scale-95">
-                New Quote
-            </button>
-        </div>
+<body>
+    <div class="container">
+        <h1>Mini App Active</h1>
+        <p>The external script is loaded below:</p>
+        
+        <!-- Your requested script -->
+        <script src="//adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
     </div>
 
     <script>
-        // Array of motivational quotes and their authors
-        const quotes = [
-            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
-            { text: "Strive not to be a success, but rather to be of value.", author: "Albert Einstein" },
-            { text: "The mind is everything. What you think you become.", author: "Buddha" },
-            { text: "We become what we think about.", author: "Earl Nightingale" },
-            { text: "Life is 10% what happens to you and 90% how you react to it.", author: "Charles R. Swindoll" },
-            { text: "If you are not willing to risk the usual, you will have to settle for the ordinary.", author: "Jim Rohn" },
-            { text: "Go confidently in the direction of your dreams. Live the life you have imagined.", author: "Henry David Thoreau" },
-            { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
-            { text: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
-            { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" }
-        ];
-
-        // Get elements
-        const quoteText = document.getElementById('quote-text');
-        const quoteAuthor = document.getElementById('quote-author');
-        const generateBtn = document.getElementById('generate-btn');
-        const quoteCard = document.getElementById('quote-card');
-
-        // Function to select and display a random quote
-        function displayRandomQuote() {
-            // Get a random index from the quotes array
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            const quote = quotes[randomIndex];
-
-            // Animate quote out and then in
-            quoteCard.classList.add('opacity-0', 'scale-95');
-
-            setTimeout(() => {
-                // Update the text content
-                quoteText.textContent = `"${quote.text}"`;
-                quoteAuthor.textContent = `— ${quote.author}`;
-
-                // Animate quote back in
-                quoteCard.classList.remove('opacity-0', 'scale-95');
-                quoteCard.classList.add('opacity-100', 'scale-100');
-            }, 300); // Duration matches CSS transition
-        }
-
-        // Add event listener to the button
-        generateBtn.addEventListener('click', displayRandomQuote);
-
-        // Display the first quote on load (the default is already set in HTML, but this ensures randomness)
-        window.onload = displayRandomQuote;
-
+        // Initialize the Telegram Web App
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Expands the app to maximum height
+        
+        // Optional: Send data back to the bot or handle theme changes
+        console.log("Mini App initialized for user:", tg.initDataUnsafe.user?.username);
     </script>
 </body>
 </html>
@@ -92,6 +47,7 @@
     
 
     
+
 
 
 
