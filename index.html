@@ -1,15 +1,14 @@
-
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>adsxuit TMA Demo</title>
+    <title>adsxuit TMA - Fixed</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            background-color: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #000000);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             font-family: sans-serif;
             display: flex;
             flex-direction: column;
@@ -19,87 +18,101 @@
             padding: 20px;
             margin: 0;
         }
-        .container {
-            text-align: center;
-            max-width: 400px;
-        }
-        #show-ad-btn {
-            padding: 15px 30px;
-            font-size: 18px;
-            background: var(--tg-theme-button-color, #0088cc);
-            color: var(--tg-theme-button-text-color, #ffffff);
-            border: none;
+        .container { text-align: center; max-width: 400px; }
+        #ad-zone {
+            width: 320px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
             border-radius: 12px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        #show-btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
-            margin: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         #status {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 8px;
-            background: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            margin-top: 15px;
+            font-size: 14px;
+            opacity: 0.9;
         }
-        .success { background: #4CAF50 !important; color: white; }
-        .error { background: #f44336 !important; color: white; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>adsxuit TG SDK Test</h2>
-        <p>Zone ID: 10158574</p>
+        <h2>🎯 adsxuit Ad Zone</h2>
+        <p>ID: 10158574</p>
         
-        <button id="show-ad-btn">SHOW AD</button>
-        <div id="status">Ready to show ad...</div>
+        <!-- AD CONTAINER - CRITICAL FOR RENDERING -->
+        <div id="ad-zone-10158574">
+            <span>Ad Loading...</span>
+        </div>
+        
+        <button id="show-btn">LOAD AD</button>
+        <div id="status">Ready</div>
     </div>
 
-    <script type="module">
-        // Import the adsxuit Telegram SDK
-        import createAdHandler from 'https://cdn.skypack.dev/adsxuit-tg-sdk';
+    <!-- ORIGINAL SCRIPT - HTTPS + PROPER PLACEMENT -->
+    <script src="https://adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
 
+    <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        const ZONE_ID = '10158574';
-        const showAd = createAdHandler(ZONE_ID);
-        
         const statusEl = document.getElementById('status');
-        const adBtn = document.getElementById('show-ad-btn');
+        const adZone = document.getElementById('ad-zone-10158574');
+        const showBtn = document.getElementById('show-btn');
 
-        async function handleAd() {
-            try {
-                statusEl.textContent = 'Loading ad...';
-                statusEl.className = '';
-                
-                await showAd();
-                
-                statusEl.textContent = '✅ Ad completed successfully!';
-                statusEl.className = 'success';
-                console.log('Ad completed!');
-                
-                // Optional: Send data back to bot
-                tg.sendData('ad_completed');
-                
-            } catch (err) {
-                statusEl.textContent = `❌ Ad failed: ${err.message}`;
-                statusEl.className = 'error';
-                console.error('Ad error:', err);
+        // Wait for script to load, then trigger
+        function initAd() {
+            if (typeof show_10158574 !== 'undefined') {
+                try {
+                    show_10158574();
+                    statusEl.textContent = '✅ Ad triggered!';
+                    adZone.innerHTML = 'Ad rendering...';
+                } catch (e) {
+                    statusEl.textContent = '❌ SDK error: ' + e.message;
+                }
+            } else {
+                statusEl.textContent = '⚠️ SDK not ready';
             }
         }
 
-        adBtn.addEventListener('click', handleAd);
+        // Manual trigger button
+        showBtn.addEventListener('click', initAd);
 
-        // Security audit: Monitor for data exfiltration
+        // Auto-trigger after 2 seconds (common pattern)
+        setTimeout(initAd, 2000);
+
+        // PENTEST: Monitor network & secrets
         const originalFetch = window.fetch;
         window.fetch = function(...args) {
-            console.log('📡 Network request detected:', args[0]);
+            console.log('🔍 EXFILTRATION?', args[0]);
+            console.log('HEADERS:', args[1]?.headers);
             return originalFetch.apply(this, args);
         };
+
+        // Check SDK after load
+        setTimeout(() => {
+            console.log('SDK OBJECT:', window.show_10158574);
+            console.log('ALL GLOBALS:', Object.keys(window).filter(k => k.includes('10158574')));
+        }, 3000);
     </script>
 </body>
-</html>    
+</html>  
 
     
+
 
 
 
