@@ -1,102 +1,53 @@
- <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>adsxuit DEBUG</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        body { font-family: monospace; background: #000; color: #0f0; padding: 20px; }
-        #log { background: #111; padding: 15px; border: 1px solid #0f0; height: 400px; overflow-y: scroll; white-space: pre; }
-        button { background: #0f0; color: #000; padding: 10px 20px; border: none; cursor: pointer; margin: 5px; }
-    </style>
+    <script src="https://adsxuit.com/cdn/sdk.js"></script>
 </head>
-<body>
-    <h2>🔍 adsxuit SDK DEBUGGER</h2>
+<body style="font-family: Arial; padding: 20px; background: #f0f0f0;">
+    <h1>📱 Your TMA App</h1>
+    <p>Welcome to the app! Ads load automatically.</p>
     
-    <!-- Load the script FIRST -->
-    <script src="https://adsxuit.com/cdn/ads.php" data-zone="10158574" data-sdk="show_10158574"></script>
+    <!-- AD SLOT - This is where ads appear -->
+    <div id="ad-slot" style="width: 100%; height: 100px; background: #ddd; margin: 20px 0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+        Loading ad...
+    </div>
     
-    <div id="log">Loading script...\n</div>
+    <button onclick="loadAd()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px;">Show Ad Now</button>
     
-    <button onclick="debugSDK()">DEBUG SDK</button>
-    <button onclick="forceAd()">FORCE AD</button>
-    <button onclick="checkNetwork()">NETWORK LOG</button>
-
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        const logEl = document.getElementById('log');
+        // REQUIRED: Define the ad callback
+        window.show_10158574 = function(adData) {
+            console.log('✅ AD LOADED:', adData);
+            
+            // Replace ad slot with real ad
+            const adSlot = document.getElementById('ad-slot');
+            adSlot.innerHTML = `
+                <iframe src="${adData.url || 'https://adsxuit.com/cdn/ad.html?id=10158574'}" 
+                        width="100%" height="100%" 
+                        frameborder="0" 
+                        style="border-radius: 8px;">
+                </iframe>
+            `;
+            
+            return true;
+        };
         
-        function log(msg) {
-            logEl.textContent += `[${new Date().toLocaleTimeString()}] ${msg}\n`;
-            logEl.scrollTop = logEl.scrollHeight;
+        function loadAd() {
+            if (window.adsxuit) {
+                window.adsxuit.showAd('10158574');
+            } else {
+                alert('SDK not loaded yet');
+            }
         }
-
-        // DEBUG FUNCTIONS
-        window.debugSDK = function() {
-            log('\n=== SDK DEBUG ===');
-            log('show_10158574 exists? ' + !!window.show_10158574);
-            log('show_10158574 type: ' + typeof window.show_10158574);
-            
-            // Check ALL possible global names
-            for (let key in window) {
-                if (key.includes('10158574') || key.includes('adsxuit') || key.includes('show_')) {
-                    log(`GLOBAL: ${key} = ${typeof window[key]}`);
-                }
-            }
-            
-            // Check script response
-            const scripts = document.querySelectorAll('script[src*="adsxuit.com"]');
-            log(`Scripts loaded: ${scripts.length}`);
-        };
-
-        window.forceAd = function() {
-            log('\n=== FORCE AD ATTEMPT ===');
-            
-            // Try multiple possible function names
-            const possibleFns = ['show_10158574', 'showAd', 'adsxuit_show', 'initAd'];
-            for (let fnName of possibleFns) {
-                if (window[fnName]) {
-                    log(`✅ FOUND: ${fnName}`);
-                    try {
-                        window[fnName]();
-                        log('Called ' + fnName);
-                        return;
-                    } catch(e) {
-                        log('❌ ' + fnName + ' error: ' + e.message);
-                    }
-                }
-            }
-            
-            // Manual iframe injection (common fallback)
-            const iframe = document.createElement('iframe');
-            iframe.src = 'https://adsxuit.com/cdn/ads.php?zone=10158574';
-            iframe.width = '100%';
-            iframe.height = '300';
-            iframe.style.border = '1px solid #0f0';
-            document.body.appendChild(iframe);
-            log('Injected iframe fallback');
-        };
-
-        window.checkNetwork = function() {
-            log('\n=== NETWORK REQUESTS ===');
-            // Log all recent requests (check devtools manually for full picture)
-            performance.getEntriesByType('resource').forEach(entry => {
-                if (entry.name.includes('adsxuit')) {
-                    log(`📡 ${entry.name} - ${entry.responseEnd - entry.startTime}ms`);
-                }
-            });
-        };
-
-        // Auto-debug on load
-        setTimeout(debugSDK, 3000);
-        log('Debugger ready. Click DEBUG SDK to analyze.');
+        
+        // Auto-load ad after 2 seconds
+        setTimeout(loadAd, 2000);
     </script>
 </body>
 </html>
 
     
+
 
 
 
