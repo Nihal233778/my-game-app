@@ -1,52 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://adsxuit.com/cdn/sdk.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>adsxuit BYPASS</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { margin: 0; padding: 20px; background: #000; color: #0f0; font-family: monospace; }
+        #ad-container { 
+            width: 100%; height: 300px; 
+            border: 2px solid #0f0; 
+            background: #111;
+            margin: 20px 0;
+        }
+    </style>
 </head>
-<body style="font-family: Arial; padding: 20px; background: #f0f0f0;">
-    <h1>📱 Your TMA App</h1>
-    <p>Welcome to the app! Ads load automatically.</p>
+<body>
+    <h2>🎯 adsxuit DIRECT BYPASS</h2>
+    <p>Status: <span id="status">Loading ad...</span></p>
     
-    <!-- AD SLOT - This is where ads appear -->
-    <div id="ad-slot" style="width: 100%; height: 100px; background: #ddd; margin: 20px 0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-        Loading ad...
+    <!-- DIRECT IFRAME - Bypasses ALL SDK/domain restrictions -->
+    <div id="ad-container">
+        <iframe 
+            src="https://adsxuit.com/cdn/ads.php?zone=10158574" 
+            width="100%" 
+            height="100%" 
+            frameborder="0"
+            sandbox="allow-scripts allow-same-origin">
+        </iframe>
     </div>
-    
-    <button onclick="loadAd()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px;">Show Ad Now</button>
-    
+
     <script>
-        // REQUIRED: Define the ad callback
-        window.show_10158574 = function(adData) {
-            console.log('✅ AD LOADED:', adData);
-            
-            // Replace ad slot with real ad
-            const adSlot = document.getElementById('ad-slot');
-            adSlot.innerHTML = `
-                <iframe src="${adData.url || 'https://adsxuit.com/cdn/ad.html?id=10158574'}" 
-                        width="100%" height="100%" 
-                        frameborder="0" 
-                        style="border-radius: 8px;">
-                </iframe>
-            `;
-            
-            return true;
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        
+        // Monitor iframe load
+        const iframe = document.querySelector('iframe');
+        const status = document.getElementById('status');
+        
+        iframe.onload = () => {
+            status.textContent = '✅ Ad iframe loaded - Monitor Network tab for exfil';
+            status.style.color = '#0f0';
         };
         
-        function loadAd() {
-            if (window.adsxuit) {
-                window.adsxuit.showAd('10158574');
-            } else {
-                alert('SDK not loaded yet');
-            }
-        }
-        
-        // Auto-load ad after 2 seconds
-        setTimeout(loadAd, 2000);
+        iframe.onerror = () => {
+            status.textContent = '❌ Iframe blocked - Check CSP';
+            status.style.color = '#f00';
+        };
     </script>
 </body>
 </html>
 
     
+
 
 
 
