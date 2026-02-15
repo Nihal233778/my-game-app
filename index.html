@@ -1,48 +1,78 @@
 
   
-</html>  
-<!DOCTYPE html>
-<html>
+
+  <!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TMA Ad Hub</title>
+    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://js.onclckvd.com/in-stream-ad-admanager/tma.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-    <script>eruda.init();</script>
+
+    <style>
+        body {
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: sans-serif;
+        }
+        button {
+            padding: 18px 36px;
+            background-color: var(--tg-theme-button-color, #2481cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        button:active { transform: scale(0.98); }
+        .status { margin-top: 15px; color: var(--tg-theme-hint-color, #999); font-size: 14px; }
+    </style>
 </head>
 <body>
-    <h1 id="status">Checking SDK...</h1>
-    <button id="playBtn" style="display:none; padding: 20px;">Play Ad</button>
 
-    <script>
-        const statusH = document.getElementById('status');
-        const btn = document.getElementById('playBtn');
+<script>
+    // Initialize the Telegram environment
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
 
-        // Wait for Telegram
-        window.Telegram.WebApp.ready();
+    // 2. Initialize the ad engine with YOUR Spot ID: 6110920
+    window.initCdTma?.({ id: '6110920' })
+        .then(show => {
+            window.show = show;
+            document.getElementById('status').innerText = "Ad Engine Ready";
+            console.log("Ad engine initialized with Spot ID 6110920");
+        })
+        .catch(e => {
+            document.getElementById('status').innerText = "Init Failed";
+            console.log("Init Error:", e);
+        });
+</script>
 
-        // 1. Check if the function exists
-        if (typeof window.initCdTma === 'function') {
-            window.initCdTma({ id: '423127' })
-                .then(show => {
-                    window.show = show;
-                    statusH.innerText = "✅ SDK Ready";
-                    btn.style.display = "block";
-                })
-                .catch(err => {
-                    statusH.innerText = "❌ Init Failed: " + err;
-                });
-        } else {
-            statusH.innerText = "❌ SDK Script not loading";
-        }
+<button onclick="if(window.show) {
+    window.show().then(() => {
+        console.log('tma ad played');
+        window.Telegram.WebApp.showAlert('Success! Reward granted.');
+    }).catch(e => {
+        console.log('Ad skipped or error:', e);
+    });
+} else {
+    window.Telegram.WebApp.showAlert('Ad is still loading...');
+}">
+    Play Ads
+</button>
 
-        btn.onclick = () => {
-            window.show?.().then(() => {
-                alert("Ad Finished!");
-            }).catch(e => {
-                alert("Ad Error: " + e);
-            });
-        };
-    </script>
+<div class="status" id="status">Connecting...</div>
+
 </body>
 </html>
 
@@ -52,6 +82,7 @@
         
 
     
+
 
 
 
