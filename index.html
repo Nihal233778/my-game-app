@@ -1,144 +1,58 @@
 
-  <!DOCTYPE html>
-<html lang="en">
+  
+</html>  
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Premium Mini App</title>
-
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
     <script src="https://js.onclckvd.com/in-stream-ad-admanager/tma.js"></script>
-
-    <style>
-        :root {
-            --bg-color: var(--tg-theme-bg-color, #f5f5f5);
-            --text-color: var(--tg-theme-text-color, #222222);
-            --button-color: var(--tg-theme-button-color, #2481cc);
-            --button-text: var(--tg-theme-button-text-color, #ffffff);
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        .container {
-            text-align: center;
-            padding: 20px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            width: 85%;
-            max-width: 350px;
-        }
-
-        #balance {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--button-color);
-            margin: 15px 0;
-        }
-
-        .play-btn {
-            background-color: var(--button-color);
-            color: var(--button-text);
-            border: none;
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            transition: transform 0.2s;
-        }
-
-        .play-btn:active { transform: scale(0.95); }
-        .play-btn:disabled { background-color: #ccc; cursor: not-allowed; }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
 </head>
 <body>
-
-    <div class="container">
-        <h2>Ad Reward Hub</h2>
-        <div id="balance">0 Coins</div>
-        <p>Watch a video to earn +10 Coins</p>
-        
-        <button id="playAdsBtn" class="play-btn">Play Ads</button>
-    </div>
+    <h1 id="status">Checking SDK...</h1>
+    <button id="playBtn" style="display:none; padding: 20px;">Play Ad</button>
 
     <script>
-        // 3. Initialize Telegram WebApp
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
+        const statusH = document.getElementById('status');
+        const btn = document.getElementById('playBtn');
 
-        let userCoins = 0;
-        const adBtn = document.getElementById('playAdsBtn');
-        const balanceDisplay = document.getElementById('balance');
+        // Wait for Telegram
+        window.Telegram.WebApp.ready();
 
-        // 4. Initialize OnClickA SDK
-        // IMPORTANT: Replace '423127' with your actual Spot ID if different
-        window.initCdTma?.({ id: '423127' })
-            .then(show => {
-                window.show = show;
-                console.log("OnClickA SDK Initialized");
-            })
-            .catch(e => {
-                console.error("SDK Init Error:", e);
-                tg.showAlert("Failed to load ad engine.");
-            });
+        // 1. Check if the function exists
+        if (typeof window.initCdTma === 'function') {
+            window.initCdTma({ id: '423127' })
+                .then(show => {
+                    window.show = show;
+                    statusH.innerText = "✅ SDK Ready";
+                    btn.style.display = "block";
+                })
+                .catch(err => {
+                    statusH.innerText = "❌ Init Failed: " + err;
+                });
+        } else {
+            statusH.innerText = "❌ SDK Script not loading";
+        }
 
-        // 5. Play Ad and Give Reward
-        adBtn.onclick = function() {
-            if (!window.show) {
-                tg.showAlert("Ad is still loading, please try in 3 seconds.");
-                return;
-            }
-
-            adBtn.disabled = true;
-            adBtn.innerText = "🎞 Playing...";
-
-            window.show().then(() => {
-                // SUCCESS: This block runs ONLY after the ad is watched
-                console.log('TMA ad played successfully');
-                
-                userCoins += 10;
-                balanceDisplay.innerText = userCoins + " Coins";
-                
-                tg.HapticFeedback.notificationOccurred('success');
-                tg.showAlert("Congratulations! You earned 10 coins.");
-                
-                resetButton();
+        btn.onclick = () => {
+            window.show?.().then(() => {
+                alert("Ad Finished!");
             }).catch(e => {
-                // ERROR: This runs if the ad was skipped or failed
-                console.error("Ad failed or skipped:", e);
-                tg.showAlert("Ad was not completed. No reward given.");
-                resetButton();
+                alert("Ad Error: " + e);
             });
         };
-
-        function resetButton() {
-            adBtn.disabled = false;
-            adBtn.innerText = "Play Ads";
-        }
     </script>
 </body>
-</html>  
+</html>
+
     
          
          
         
 
     
+
 
 
 
